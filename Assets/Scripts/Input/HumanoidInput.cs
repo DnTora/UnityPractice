@@ -6,6 +6,7 @@ public class HumanoidInput : MonoBehaviour
 
     public Vector2 MoveInput { get; private set; } = Vector2.zero;
     public Vector2 LookInput { get; private set; } = Vector2.zero;
+    public bool InvertMouseY { get; private set; } = true;
     private HumanoidInputActions _input = null;
     public float MovementSpeed = 30.0f;
 
@@ -17,19 +18,18 @@ public class HumanoidInput : MonoBehaviour
         _input.humanoid.Move.performed += SetMove;
         _input.humanoid.Move.canceled += SetMove;
 
-        _input.humanoid.Move.performed += SetLook;
-        _input.humanoid.Move.canceled += SetLook;
+        _input.humanoid.Look.performed += SetLook;
+        _input.humanoid.Look.canceled += SetLook;
 
     }
 
-    // Update is called once per frame
     void OnDisable()
     {
         _input.humanoid.Move.performed -= SetMove;
         _input.humanoid.Move.canceled -= SetMove;
 
-        _input.humanoid.Move.performed -= SetLook;
-        _input.humanoid.Move.canceled -= SetLook;
+        _input.humanoid.Look.performed -= SetLook;
+        _input.humanoid.Look.canceled -= SetLook;
 
         _input.humanoid.Disable();
     }
@@ -42,6 +42,5 @@ public class HumanoidInput : MonoBehaviour
     private void SetMove(InputAction.CallbackContext ctx)
     {
         MoveInput = ctx.ReadValue<Vector2>();
-        Debug.Log(MoveInput.ToString());
     }
 }

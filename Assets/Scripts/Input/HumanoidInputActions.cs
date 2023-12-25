@@ -37,7 +37,7 @@ public partial class @HumanoidInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""New action"",
+                    ""name"": ""Look"",
                     ""type"": ""Value"",
                     ""id"": ""b673bcbb-08cf-49f5-afcf-e1ae7e4d9df7"",
                     ""expectedControlType"": ""Vector2"",
@@ -120,7 +120,18 @@ public partial class @HumanoidInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""85eb1dbe-a602-4f97-9a51-73fc5dfbe9cb"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -132,7 +143,7 @@ public partial class @HumanoidInputActions: IInputActionCollection2, IDisposable
         // humanoid
         m_humanoid = asset.FindActionMap("humanoid", throwIfNotFound: true);
         m_humanoid_Move = m_humanoid.FindAction("Move", throwIfNotFound: true);
-        m_humanoid_Newaction = m_humanoid.FindAction("New action", throwIfNotFound: true);
+        m_humanoid_Look = m_humanoid.FindAction("Look", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -195,13 +206,13 @@ public partial class @HumanoidInputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_humanoid;
     private List<IHumanoidActions> m_HumanoidActionsCallbackInterfaces = new List<IHumanoidActions>();
     private readonly InputAction m_humanoid_Move;
-    private readonly InputAction m_humanoid_Newaction;
+    private readonly InputAction m_humanoid_Look;
     public struct HumanoidActions
     {
         private @HumanoidInputActions m_Wrapper;
         public HumanoidActions(@HumanoidInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_humanoid_Move;
-        public InputAction @Newaction => m_Wrapper.m_humanoid_Newaction;
+        public InputAction @Look => m_Wrapper.m_humanoid_Look;
         public InputActionMap Get() { return m_Wrapper.m_humanoid; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -214,9 +225,9 @@ public partial class @HumanoidInputActions: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @Newaction.started += instance.OnNewaction;
-            @Newaction.performed += instance.OnNewaction;
-            @Newaction.canceled += instance.OnNewaction;
+            @Look.started += instance.OnLook;
+            @Look.performed += instance.OnLook;
+            @Look.canceled += instance.OnLook;
         }
 
         private void UnregisterCallbacks(IHumanoidActions instance)
@@ -224,9 +235,9 @@ public partial class @HumanoidInputActions: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @Newaction.started -= instance.OnNewaction;
-            @Newaction.performed -= instance.OnNewaction;
-            @Newaction.canceled -= instance.OnNewaction;
+            @Look.started -= instance.OnLook;
+            @Look.performed -= instance.OnLook;
+            @Look.canceled -= instance.OnLook;
         }
 
         public void RemoveCallbacks(IHumanoidActions instance)
@@ -247,6 +258,6 @@ public partial class @HumanoidInputActions: IInputActionCollection2, IDisposable
     public interface IHumanoidActions
     {
         void OnMove(InputAction.CallbackContext context);
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnLook(InputAction.CallbackContext context);
     }
 }
