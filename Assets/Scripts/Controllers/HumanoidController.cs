@@ -55,7 +55,6 @@ public class HumanoidController : MonoBehaviour
 
     private Vector3 GetPlayerLook()
     {
-        Debug.Log(Time.deltaTime);
         _previousPlayerLook = _playerLook;
         _playerLook = new Vector3(_input.LookInput.x, (_input.InvertMouseY ? -_input.LookInput.y : _input.LookInput.y), 0.0f);
         return Vector3.Lerp(_previousPlayerLook, _playerLook * Time.deltaTime, _playerLookInputLerpTime);
