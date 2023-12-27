@@ -69,7 +69,7 @@ public class HumanoidController : MonoBehaviour
     private void PitchCamera()
     {
         _cameraPitch += _playerLook.y * _pitchSpeedMultiplier;
-        _cameraPitch = Mathf.Clamp(_cameraPitch, 5.0f, 89.9f);
+        _cameraPitch = Mathf.Clamp(_cameraPitch, -89.9f, 89.9f);
 
         CameraFollow.rotation = Quaternion.Euler(_cameraPitch, CameraFollow.rotation.eulerAngles.y, CameraFollow.rotation.eulerAngles.z);
     }
