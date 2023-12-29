@@ -44,6 +44,24 @@ public partial class @HumanoidInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ChangeCamera"",
+                    ""type"": ""Button"",
+                    ""id"": ""dbc22a0d-4764-499b-864c-44ac6999537e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Zoom"",
+                    ""type"": ""Value"",
+                    ""id"": ""f8f22117-1688-422c-b3be-e7c20f33516d"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -134,6 +152,50 @@ public partial class @HumanoidInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dbb7f181-a5a9-4114-83f1-f6cf1c3c399b"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d24f6733-830d-4b90-aca6-2dbaca0bd78f"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b781a5bb-13af-435c-8653-f01cee5e0e3b"",
+                    ""path"": ""<Gamepad>/dpad/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""52e2a1a4-29a8-446e-b115-90f99cf78b39"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": ""Clamp(min=-4,max=4)"",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -144,6 +206,8 @@ public partial class @HumanoidInputActions: IInputActionCollection2, IDisposable
         m_humanoid = asset.FindActionMap("humanoid", throwIfNotFound: true);
         m_humanoid_Move = m_humanoid.FindAction("Move", throwIfNotFound: true);
         m_humanoid_Look = m_humanoid.FindAction("Look", throwIfNotFound: true);
+        m_humanoid_ChangeCamera = m_humanoid.FindAction("ChangeCamera", throwIfNotFound: true);
+        m_humanoid_Zoom = m_humanoid.FindAction("Zoom", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -207,12 +271,16 @@ public partial class @HumanoidInputActions: IInputActionCollection2, IDisposable
     private List<IHumanoidActions> m_HumanoidActionsCallbackInterfaces = new List<IHumanoidActions>();
     private readonly InputAction m_humanoid_Move;
     private readonly InputAction m_humanoid_Look;
+    private readonly InputAction m_humanoid_ChangeCamera;
+    private readonly InputAction m_humanoid_Zoom;
     public struct HumanoidActions
     {
         private @HumanoidInputActions m_Wrapper;
         public HumanoidActions(@HumanoidInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_humanoid_Move;
         public InputAction @Look => m_Wrapper.m_humanoid_Look;
+        public InputAction @ChangeCamera => m_Wrapper.m_humanoid_ChangeCamera;
+        public InputAction @Zoom => m_Wrapper.m_humanoid_Zoom;
         public InputActionMap Get() { return m_Wrapper.m_humanoid; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -228,6 +296,12 @@ public partial class @HumanoidInputActions: IInputActionCollection2, IDisposable
             @Look.started += instance.OnLook;
             @Look.performed += instance.OnLook;
             @Look.canceled += instance.OnLook;
+            @ChangeCamera.started += instance.OnChangeCamera;
+            @ChangeCamera.performed += instance.OnChangeCamera;
+            @ChangeCamera.canceled += instance.OnChangeCamera;
+            @Zoom.started += instance.OnZoom;
+            @Zoom.performed += instance.OnZoom;
+            @Zoom.canceled += instance.OnZoom;
         }
 
         private void UnregisterCallbacks(IHumanoidActions instance)
@@ -238,6 +312,12 @@ public partial class @HumanoidInputActions: IInputActionCollection2, IDisposable
             @Look.started -= instance.OnLook;
             @Look.performed -= instance.OnLook;
             @Look.canceled -= instance.OnLook;
+            @ChangeCamera.started -= instance.OnChangeCamera;
+            @ChangeCamera.performed -= instance.OnChangeCamera;
+            @ChangeCamera.canceled -= instance.OnChangeCamera;
+            @Zoom.started -= instance.OnZoom;
+            @Zoom.performed -= instance.OnZoom;
+            @Zoom.canceled -= instance.OnZoom;
         }
 
         public void RemoveCallbacks(IHumanoidActions instance)
@@ -259,5 +339,7 @@ public partial class @HumanoidInputActions: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
+        void OnChangeCamera(InputAction.CallbackContext context);
+        void OnZoom(InputAction.CallbackContext context);
     }
 }

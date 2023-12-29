@@ -13,7 +13,6 @@ public class HumanoidController : MonoBehaviour
     public Vector3 _playerLook = Vector3.zero;
     Vector3 _previousPlayerLook = Vector3.zero;
 
-
     [SerializeField] float _cameraPitch = 0.0f;
     [SerializeField] float _playerLookInputLerpTime = 0.35f;
 
@@ -33,9 +32,12 @@ public class HumanoidController : MonoBehaviour
     [System.Obsolete]
     void FixedUpdate()
     {
-        _playerLook = GetPlayerLook();
-        PlayerLook();
-        PitchCamera();
+        if (!_cameraController.UsingOrbitalCamera)
+        {
+            _playerLook = GetPlayerLook();
+            PlayerLook();
+            PitchCamera();
+        }
 
         _playerPosition = GetPlayerPosition();
         _playerPosition = MovePlayerPosition();
